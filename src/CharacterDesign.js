@@ -29,42 +29,14 @@ export class CharacterDesign extends HTMLElement {
 
         <style>
 
-            .ShowMaskNumber6 {
-                transition: 0.5s all;
-                transform: TranslateX(0);
-            }
-
-            .ShowMaskNumber5 {
-                transition: 0.5s all;
-                transform: TranslateX(-100px);
-            }
-
-            .ShowMaskNumber4 {
-                transition: 0.5s all;
-                transform: TranslateX(-200px);
-            }
-
-            .ShowMaskNumber3 {
-                transition: 0.5s all;
-                transform: TranslateX(-300px);
-            }
-
-             .ShowMaskNumber2 {
-                transition: 0.5s all;
-                transform: TranslateX(-400px);
-            }
-
-            .ShowMaskNumber1 {
-                transition: 0.5s all;
-                transform: TranslateX(-500px);
-            }
-          
-
             .head, .body {
                 display: flex;
                 align-items: center;
             }
 
+            .body {
+              display: none;
+            }
             .character {
                 display: flex;
                 flex-direction: column;
@@ -134,7 +106,7 @@ export class CharacterDesign extends HTMLElement {
                 
                     <div class="overlay">
                         <div style="width:100px;overflow: hidden;positive: relative"> 
-                            <img id="mask" style="position:absolute;left:0" width=600px height=100px 
+                            <img id="mask" width=600px height=100px 
                             src="./images/allmasks.png"> 
                         </div>
                     </div>
@@ -169,76 +141,39 @@ export class CharacterDesign extends HTMLElement {
         `;
   }
 
-  makeEaseInOut(timing) {
-    return function(timeFraction) {
-      if (timeFraction < .5)
-        return timing(2 * timeFraction) / 2;
-      else
-        return (2 - timing(2 * (1 - timeFraction))) / 2;
-    }
-  }
-
-  quad(timeFraction) {
-    return Math.pow(timeFraction, 2)
-  }
-
   moveHeadLeft() {
-    if (this.head > 1) {
+    if (this.head >= 1) {
 
       this.head--;
-
-      let to = parseInt(this.shadowRoot.querySelector('#mask').style.left) - 100;
-
-        this.animate({
-          duration: 2000,
-          timing: this.makeEaseInOut(this.quad),
-          draw: (progress) => {
-            this.shadowRoot.querySelector('#mask').style.left = to * progress + 'px'
-          }
-        });
-
-      //this.showSelectedMask()
+      let to = this.head * (-1 * parseInt(this.imagewidth))
+      let from = (this.head + 1) * (-1 * parseInt(this.imagewidth))
+      console.log(to);
+      this.AnimateMask(from, to);
       this.renderME();
     }
   }
 
-  showSelectedMask() {
-    let mask = this.shadowRoot.querySelector("#mask");
-    mask.classList = "";
-    mask.classList.add(`ShowMaskNumber${this.head}`);
-  }
+  AnimateMask(from , to) {
+   
+    this.shadowRoot.querySelector('#mask').animate( [
+      {transform: 'translateX(' + from + 'px)'},
+      {transform: 'translateX(' + to + 'px)'}
+    ],
+    {
+      easing: 'ease-in-out',
+      duration: 300,
+      fill: 'forwards'
+    })
 
-  animate({timing, draw, duration}) {
-
-    console.log('called animate')
-    let start = performance.now();
-  
-    requestAnimationFrame(function animate(time) {
-      // timeFraction goes from 0 to 1
-      let timeFraction = (time - start) / duration;
-      if (timeFraction > 1) timeFraction = 1;
-  
-      // calculate the current animation state
-      let progress = timing(timeFraction);
-  
-      draw(progress); // draw it
-  
-      if (timeFraction < 1) {
-        requestAnimationFrame(animate);
-      }
-  
-    });
   }
 
   moveHeadRight() {
-    if (this.head < this.NUMBER_OF_IMAGES) {
+    if (this.head < this.NUMBER_OF_IMAGES - 1) {
       this.head++;
-
-
-      let mask = this.shadowRoot.querySelector("#mask");
-      mask.classList = "";
-      mask.classList.add(`ShowMaskNumber${this.head}`);
-
+      let to = this.head * (-1 * parseInt(this.imagewidth));
+      let from = (this.head - 1) * (-1 * parseInt(this.imagewidth));
+      console.log(to);
+      this.AnimateMask(from, to);
       this.renderME();
     }
   }
