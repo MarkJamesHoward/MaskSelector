@@ -6,21 +6,14 @@ export class CharacterDesign extends HTMLElement {
 
     this.NUMBER_OF_IMAGES_HEAD = parseInt(this.getAttribute('number-of-images-head'))
     this.NUMBER_OF_IMAGES_BODY = parseInt(this.getAttribute('number-of-images-body'))
-
-    console.log("constructor called");
+    this.head = parseInt(this.getAttribute('selected-head'))
+    this.body = parseInt(this.getAttribute('selected-body'))
+    this.silhouette = 1;
     this.myDOM = this.attachShadow({ mode: "open" });
-   
-    console.log('Initial head set by attribute is ' + this.head)
-    this.body = 1;
-    render(this.template, this.myDOM);
+    this.renderME();
   }
 
   connectedCallback() {
-    this.head = this.getAttribute('selected-head');
-    this.imagewidthhead = this.getAttribute('image-width-head')
-    this.imagewidthbody = this.getAttribute('image-width-body')
-
-    this.showSelectedMask();
   }
 
   renderME() {
@@ -32,10 +25,10 @@ export class CharacterDesign extends HTMLElement {
 
         <style>
            :root {
-             font-size: 3vmin;
              box-sizing: border-box;
            }
 
+   
             .displayVertical {
               display: flex;
               flex-direction: column;
@@ -43,11 +36,12 @@ export class CharacterDesign extends HTMLElement {
 
             .CharacterCustomizeMain {
               display: grid;
-              grid-template-columns: [eyes-start mouth-start] 1fr [eyes-end mouth-end];
-              grid-template-rows: [eyes-start] 20fr [eyes-end mouth-start] 20fr [mouth-end] 60fr;
-              background: url(./images/silhouette/silhouette1.png) no-repeat center;
-              background-size: contain;
+              grid-template-columns: [eyes-start mouth-start silhouette-start] 1fr [ silhouette-end eyes-end mouth-end];
+              grid-template-rows: [eyes-start] 30fr [eyes-end mouth-start] 20fr [mouth-end silhouette-start] 50fr [silhouette-end];
+              background: url('./images/silhouette/silhouette${this.silhouette}.png') no-repeat center;
+              background-size: 70%;
               border: 2px solid black;
+              border-radius: 10%;
               width: 95vmin;
               height: 95vmin;
             }
@@ -60,8 +54,9 @@ export class CharacterDesign extends HTMLElement {
 
             .head, .body {
                 display: flex;
-                align-items: center;
-                object-fit: cover;
+                justify-content: space-between;
+                align-items:center;
+                height: 100%;
             }
 
             .character {
@@ -77,13 +72,24 @@ export class CharacterDesign extends HTMLElement {
             .headselector {
               grid-area: mouth;
             } 
-          
 
-            .headselector, .bodyselector {
-                display:flex;
-                justify-content: space-around;
+            .silhouette {
+              display:flex;
+              grid-area: silhouette;
+              height: 20vmin;
+              width: 90vmin;
+              align-self: end;
+              justify-content: space-around;
             }
 
+            .silhouettePicker {
+              object-fit: contain;
+              height: 100%;
+              opacity: 0.2;
+            }
+          
+
+           
             button {
                 cursor: pointer;
                 border-radius: 0.1rem;      
@@ -94,37 +100,33 @@ export class CharacterDesign extends HTMLElement {
             }
 
             .LeftArrow {
-              z-index:1;
-              margin-right: 1rem;
-                width: 2rem;
-                height: 2rem;
-                background: url(/images/arrows/previous.png) no-repeat center;
-                background-size: contain;
-                transition: all 0.2s ease-in-out;
-
+              margin-left: 3vmin;
+              background: url(/images/arrows/previous.png) no-repeat center;
+              background-size: contain;
            }
 
+        
           div.LeftArrow:hover {
-              transition: all 0.2s ease-in-out;
               transform: scale(1.1);
               cursor: pointer;
             }
 
             div.RightArrow:hover {
-              transition: all 0.2s ease-in-out;
               transform: scale(1.1);
               cursor: pointer;
             }
 
+            .RightArrow, .LeftArrow {
+              width: 13vmin;
+              height: 13vmin;
+              transition: all 0.2s ease-in-out;
+            }
+            .ArrowDisabled {
+              opacity: 0.4;
+          }
 
             .RightArrow {
-              z-index:1;
-              width: 2rem;
-              margin-left: 1rem;
-                height: 2rem;
-              transition: all 0.2s ease-in-out;
-                width: 30px;
-                height: 30px;
+              margin-right: 3vmin;
                 background: url(/images/arrows/next.png) no-repeat center;
                 background-size: contain;
            }
@@ -153,59 +155,76 @@ export class CharacterDesign extends HTMLElement {
 
             <div class="CharacterCustomizeMain">
 
-            <div class="bodyselector">
-                <div class='body'> 
+                <div class="bodyselector">
+                    <div class='body'> 
 
-                    <div class="LeftArrow" style="width:3rem" on-click='${() => this.moveBodyLeft()}'></div>
+                        <div id="ArrowBodyLeft" class="LeftArrow"  on-click='${() => this.moveBodyLeft()}'></div>
 
-                    <div class="overlay">
-                      <div style="width:5rem;overflow: hidden"> 
-                          <img id="body" style="width:100%;"
-                          src="./images/eyes/alleyes.png" style="border: 1px solid black"> 
-                      </div>
+                          <div style="width:20vmin"> 
+                              <img id="body" style="width:100%;"
+                              src="./images/eyes/eyes${this.body}.png" style="border: 1px solid black"> 
+                          </div>
+
+                        <div id="ArrowBodyRight" class="RightArrow" on-click='${() => this.moveBodyRight()}'> </div>
+
                     </div>
-
-                    <div class="RightArrow" on-click='${() => this.moveBodyRight()}'> </div>
-
                 </div>
+
+                <div class='headselector'>
+                    <div class='head'>
+
+                        <div id='ArrowHeadLeft' class="LeftArrow" on-click='${() => {
+                          this.moveHeadLeft();
+                        }}'>
+
+                        </div>
+                    
+                        <div style="width:35vmin"> 
+                            <img id="mask" width="100%"
+                            src="./images/mouths/mouth${this.head}.png"> 
+                        </div>
+
+                        <div id='ArrowHeadRight'  class="RightArrow" on-click='${() => this.moveHeadRight()}'>
+                        </div>
+
+                    </div>
+                </div>    
+
+                
+              <div class='silhouette'>
+                        <img class="silhouettePicker" on-click='${() => this.PickSilhouetee(1)}'   src="./images/silhouette/silhouette1.png">
+                        <img class="silhouettePicker" on-click='${() => this.PickSilhouetee(2)}'   src="./images/silhouette/silhouette2.png">
+                        <img class="silhouettePicker" on-click='${() => this.PickSilhouetee(3)}'   src="./images/silhouette/silhouette3.png">
+                        <img class="silhouettePicker" on-click='${() => this.PickSilhouetee(4)}'  src="./images/silhouette/silhouette4.png">
+              </div> 
+
             </div>
 
-            <div class='headselector'>
-                <div class='head'>
+  
 
-                    <div class="LeftArrow" on-click='${() => {
-                      this.moveHeadLeft();
-                    }}'>
-
-                    </div>
-                
-                    <div class="overlay">
-                        <div style="width:100px;overflow: hidden"> 
-                            <img id="mask" width="350rem" height=50rem 
-                            src="./images/mouths/allmouths.png"> 
-                        </div>
-                    </div>
-
-                    <div class="RightArrow" on-click='${() => this.moveHeadRight()}'>
-                    </div>
-
-                </div>
-            </div>    
-                
-            <div class='legs'></div>
-
-            </div> 
+           
         `;
   }
 
+  PickSilhouetee(item) {
+    this.silhouette = item;
+    this.renderME();
+  }
+
   moveHeadLeft() {
-    if (this.head >= 1) {
+    if (this.head > 1) {
 
       this.head--;
-      let to = this.head * (-1 * parseInt(this.imagewidthhead))
-      let from = (this.head + 1) * (-1 * parseInt(this.imagewidthhead))
-      console.log(to);
-      this.AnimateMask(from, to);
+
+      this.shadowRoot.querySelector('#ArrowHeadRight').classList.remove('ArrowDisabled')
+
+      if(this.head === 1) {
+        this.shadowRoot.querySelector('#ArrowHeadLeft').classList.add('ArrowDisabled')
+      }
+      // let to = this.head * (-1 * parseInt(this.imagewidthhead))
+      // let from = (this.head + 1) * (-1 * parseInt(this.imagewidthhead))
+      // console.log(to);
+      // this.AnimateMask(from, to);
       this.renderME();
     }
   }
@@ -241,25 +260,39 @@ export class CharacterDesign extends HTMLElement {
   }
 
   moveHeadRight() {
-    if (this.head < this.NUMBER_OF_IMAGES_HEAD - 1) {
+    if (this.head < this.NUMBER_OF_IMAGES_HEAD) {
       this.head++;
-      let to = this.head * (-1 * parseInt(this.imagewidthhead));
-      let from = (this.head - 1) * (-1 * parseInt(this.imagewidthhead));
-      console.log(to);
-      this.AnimateMask(from, to);
+      
+      this.shadowRoot.querySelector('#ArrowHeadLeft').classList.remove('ArrowDisabled')
+
+      if(this.head === this.NUMBER_OF_IMAGES_HEAD) {
+        this.shadowRoot.querySelector('#ArrowHeadRight').classList.add('ArrowDisabled')
+      }
+
+      // let to = this.head * (-1 * parseInt(this.imagewidthhead));
+      // let from = (this.head - 1) * (-1 * parseInt(this.imagewidthhead));
+      // console.log(to);
+      // this.AnimateMask(from, to);
       this.renderME();
     }
   }
 
   moveBodyLeft() {
     if (this.body > 0) {
-      if (this.body >= 1) {
+      if (this.body > 1) {
 
         this.body--;
-        let to = this.body * (-1 * parseInt(this.imagewidthbody))
-        let from = (this.body + 1) * (-1 * parseInt(this.imagewidthbody))
-        console.log(to);
-        this.AnimateBody(from, to);
+
+        this.shadowRoot.querySelector('#ArrowBodyRight').classList.remove('ArrowDisabled')
+
+        if(this.body === 1) {
+          this.shadowRoot.querySelector('#ArrowBodyLeft').classList.add('ArrowDisabled')
+        }
+
+        // let to = this.body * (-1 * parseInt(this.imagewidthbody))
+        // let from = (this.body + 1) * (-1 * parseInt(this.imagewidthbody))
+        // console.log(to);
+        // this.AnimateBody(from, to);
         this.renderME();
       }
     }
@@ -268,10 +301,16 @@ export class CharacterDesign extends HTMLElement {
   moveBodyRight() {
     if (this.body < this.NUMBER_OF_IMAGES_BODY) {
         this.body++;
-        let to = this.body * (-1 * parseInt(this.imagewidthbody))
-        let from = (this.body - 1) * (-1 * parseInt(this.imagewidthbody))
-        console.log(to);
-        this.AnimateBody(from, to);
+
+        this.shadowRoot.querySelector('#ArrowBodyLeft').classList.remove('ArrowDisabled')
+
+        if(this.body === this.NUMBER_OF_IMAGES_BODY) {
+          this.shadowRoot.querySelector('#ArrowBodyRight').classList.add('ArrowDisabled')
+        }
+        // let to = this.body * (-1 * parseInt(this.imagewidthbody))
+        // let from = (this.body - 1) * (-1 * parseInt(this.imagewidthbody))
+        // console.log(to);
+        // this.AnimateBody(from, to);
         this.renderME();
     }
   }
