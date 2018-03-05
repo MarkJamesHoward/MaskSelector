@@ -3,6 +3,8 @@ import {
 } from "@polymer/polymer/polymer-element.js";
 
 
+import '@polymer/iron-icons/iron-icons.js'
+
 export class CharacterDesign extends PolymerElement {
 
   constructor() {
@@ -32,7 +34,9 @@ export class CharacterDesign extends PolymerElement {
       silhouette: { Type: String, Value: "" },
       level: { Type: Number, value: 1 },
       mouth: { Type: Number, value: 1 },
-      eyes: { Type: Number, value: 1 }
+      eyes: { Type: Number, value: 1 },
+      NUMBER_OF_IMAGES_EYES: {Type: Number, value:3},
+      NUMBER_OF_IMAGES_MOUTH: {Type: Number, value:3},
     };
   }
 
@@ -235,31 +239,25 @@ export class CharacterDesign extends PolymerElement {
 
 
  </style>
-
  <div class="CharacterCustomizeMain">
 
      <div class='SilhouetteBackgroundContainer'>
-             <img width=80% style='display: block; margin: 0 auto;' src='./images/silhouette/silhouette${
-                 this.silhouette
-             }.png'>
+             <img width=80% style='display: block; margin: 0 auto;' src='./images/silhouette/silhouette[[silhouette]].png'>
      </div>
 
      <div class='eyesselector'>
              <div class='eyes'>
 
-                 <div id='ArrowEyesLeft' class="LeftArrow" on-click='${() => {
-                     this.moveEyesLeft();
-                 }}'>
+                 <div id='ArrowEyesLeft' class="LeftArrow" on-click='moveEyesLeft'>
 
                  </div>
          
                  <div style="width:30%"> 
                      <img width="100%"
-                     src="./images/eyes/eyes${this.eyes}.png"> 
+                     src="./images/eyes/eyes[[eyes]].png"> 
                  </div>
 
-                 <div id='ArrowEyesRight'  class="RightArrow" on-click='${() =>
-                     this.moveEyesRight()}'>
+                 <div id='ArrowEyesRight'  class="RightArrow" on-click='moveEyesRight'>
                  </div>
 
              </div>
@@ -269,50 +267,37 @@ export class CharacterDesign extends PolymerElement {
      <div class="mouthselector">
          <div class='mouth'> 
 
-             <div id="ArrowMouthLeft" class="LeftArrow"  on-click='${() =>
-                 this.moveMouthLeft()}'></div>
+             <div id="ArrowMouthLeft" class="LeftArrow"  on-click='moveMouthLeft'></div>
 
                  <div style="width:30%"> 
                      <img id="mouth" style="width:100%;"
-                     src="./images/mouths/mouth${this.mouth}.png"> 
+                     src="./images/mouths/mouth[[mouth]].png"> 
                  </div>
 
-             <div id="ArrowMouthRight" class="RightArrow" on-click='${() =>
-                 this.moveMouthRight()}'> </div>
+             <div id="ArrowMouthRight" class="RightArrow" on-click="moveMouthRight"> </div>
 
          </div>
      </div>
 
      <div id='SilhouetteSelector' class='silhouette'>
              
-             <div class="OverlayTwoItemsCharacter silhouettePicker">
-                 <img style="grid-area:main;width:100%" class="sil1"
-                         on-click='${() => this.PickSilhouetee(1)}'  
-                             src="./images/silhouette/silhouette1.png">
-                 <i style="grid-area:main;z-index:2" class="fa fa-lock lock1">Locked</i>
+             <div data-silhouette="1" on-click="Pick" class="OverlayTwoItemsCharacter silhouettePicker">
+                 <img style="grid-area:main;width:100%" class="sil1" src="./images/silhouette/silhouette1.png">
+                 <iron-icon class="lock1" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
              </div>
 
-             <div class="OverlayTwoItemsCharacter silhouettePicker">
-                 <i style="grid-area:main;z-index:2" class="fa fa-lock lock2">Locked</i>
-
-                 <img style="grid-area:main;width:100%" class="sil2"
-                         on-click='${() => this.PickSilhouetee(2)}'  
-                                     src="./images/silhouette/silhouette2.png">
+             <div data-silhouette="2" on-click="Pick" class="OverlayTwoItemsCharacter silhouettePicker">
+             <iron-icon class="lock2" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
+             <img style="grid-area:main;width:100%" class="sil2"  src="./images/silhouette/silhouette2.png">
              </div>
 
-             <div class="OverlayTwoItemsCharacter silhouettePicker">
-                 <img style="grid-area:main;width:100%" class="sil3"
-                         on-click='${() => this.PickSilhouetee(3)}' 
-                             src="./images/silhouette/silhouette3.png">
-                 <i style="grid-area:main;z-index:2" class="fa fa-lock lock3">Locked</i>
+             <div data-silhouette="3" on-click="Pick"  class="OverlayTwoItemsCharacter silhouettePicker">
+                 <img style="grid-area:main;width:100%" class="sil3"  src="./images/silhouette/silhouette3.png">
+                 <iron-icon class="lock3" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
              </div>
-             <div class="OverlayTwoItemsCharacter silhouettePicker">
-                 <img style="grid-area:main;width:100%" class="sil4"
-                         on-click='${() =>
-                             this.PickSilhouetee(
-                             4
-                             )}'  src="./images/silhouette/silhouette4.png">
-                 <i style="grid-area:main;z-index:2" class="fa fa-lock lock4">Locked</i>
+             <div data-silhouette="4" on-click="Pick" class="OverlayTwoItemsCharacter silhouettePicker">
+                 <img style="grid-area:main;width:100%" class="sil4"  on-click='PickSilhouetee(4)'  src="./images/silhouette/silhouette4.png">
+                 <iron-icon class="lock4" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
              </div>
      </div> 
 
@@ -321,10 +306,10 @@ export class CharacterDesign extends PolymerElement {
   }
 
 
-  PickSilhouetee(item) {
-    console.log("pick item " + item);
+  Pick(e) {
+    let item = e.currentTarget.dataset.silhouette
     if (item <= this.level) {
-      this.silhouette = item;
+      this.silhouette = item
     }
   }
 

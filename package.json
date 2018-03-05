@@ -5,15 +5,15 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@polymer/iron-icon": "^3.0.0-pre.10",
+    "@polymer/iron-icons": "^3.0.0-pre.10",
     "@polymer/polymer": "^3.0.0-pre.10",
     "@webcomponents/webcomponentsjs": "^1.1.0",
-    "glyphicons": "^0.2.0",
-    "lit-html": "^0.9.0",
-    "webpack-dev-server": "^2.11.1"
+    "lit-html": "^0.9.0"
   },
   "devDependencies": {},
   "scripts": {
-    "build": "webpack --watch --mode development"
+    "test": "polyserve --module-resolution=node"
   },
   "keywords": [],
   "author": "",
