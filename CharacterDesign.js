@@ -44,61 +44,35 @@ export class CharacterDesign extends PolymerElement {
     if (this.$.ArrowEyesRight == undefined) return;
 
     if (this.eyes >= this.NUMBER_OF_IMAGES_EYES || this.eyes >= this.level) {
-      this.shadowRoot
-        .querySelector("#ArrowEyesRight")
-        .classList.add("ArrowDisabled");
+      this.$.ArrowEyesRight.classList.add("ArrowDisabled");
     } else {
-      this.shadowRoot
-        .querySelector("#ArrowEyesRight")
-        .classList.remove("ArrowDisabled");
+      this.$.ArrowEyesRight .classList.remove("ArrowDisabled");
     }
 
     if (this.eyes <= 1) {
-      this.shadowRoot
-        .querySelector("#ArrowEyesLeft")
-        .classList.add("ArrowDisabled");
+      this.$.ArrowEyesLeft.classList.add("ArrowDisabled");
     } else {
-      this.shadowRoot
-        .querySelector("#ArrowEyesLeft")
-        .classList.remove("ArrowDisabled");
+      this.$.ArrowEyesLeft.classList.remove("ArrowDisabled");
     }
 
     if (this.mouth <= 1) {
-      this.shadowRoot
-        .querySelector("#ArrowMouthLeft")
-        .classList.add("ArrowDisabled");
+      this.$.ArrowMouthLeft.classList.add("ArrowDisabled");
     } else {
-      this.shadowRoot
-        .querySelector("#ArrowMouthLeft")
-        .classList.remove("ArrowDisabled");
+      this.$.ArrowMouthLeft.classList.remove("ArrowDisabled");
     }
 
     if (this.mouth >= this.NUMBER_OF_IMAGES_MOUTH || this.mouth >= this.level) {
-      this.shadowRoot
-        .querySelector("#ArrowMouthRight")
-        .classList.add("ArrowDisabled");
+      this.$.ArrowMouthRight.classList.add("ArrowDisabled");
     } else {
-      this.shadowRoot
-        .querySelector("#ArrowMouthRight")
-        .classList.remove("ArrowDisabled");
+      this.$.ArrowMouthRight.classList.remove("ArrowDisabled");
     }
 
     if (this.customize === "false") {
-      this.shadowRoot
-        .querySelector("#ArrowEyesLeft")
-        .classList.add("DisableCustomize");
-      this.shadowRoot
-        .querySelector("#ArrowEyesRight")
-        .classList.add("DisableCustomize");
-      this.shadowRoot
-        .querySelector("#ArrowMouthLeft")
-        .classList.add("DisableCustomize");
-      this.shadowRoot
-        .querySelector("#ArrowMouthRight")
-        .classList.add("DisableCustomize");
-      this.shadowRoot
-        .querySelector("#SilhouetteSelector")
-        .classList.add("DisableCustomize");
+      this.$.ArrowEyesLeft.classList.add("DisableCustomize");
+      this.$.ArrowEyesRight.classList.add("DisableCustomize");
+      this.$.ArrowMouthLeft.classList.add("DisableCustomize");
+      this.$.ArrowMouthRight.classList.add("DisableCustomize");
+      this.$.SilhouetteSelector.classList.add("DisableCustomize");
     }
 
     this.ApplyLockImagesToSilhouettes();
@@ -106,8 +80,7 @@ export class CharacterDesign extends PolymerElement {
 
   connectedCallback() {
     super.connectedCallback();
-    //this.RetriveAttributeSettings()
-    //this.ConfigureButtons();
+    this.ConfigureButtons();
   }
 
   static get template() {
@@ -138,9 +111,15 @@ export class CharacterDesign extends PolymerElement {
      }
 
      .CharacterCustomizeMain {
+       padding:0; margin: 0;
+       max-height: 100vh;
        display: grid;
+       grid-template-areas: "eyes"
+                            "mouth"
+                            "
+
        grid-template-columns: [eyes-start SilhouetteBackground-start mouth-start silhouette-start] 1fr [ SilhouetteBackground-end silhouette-end eyes-end mouth-end];
-       grid-template-rows: [eyes-start SilhouetteBackground-start] 20fr [eyes-end mouth-start] 20fr [mouth-end ] 20fr [SilhouetteBackground-end silhouette-start] 40fr [silhouette-end];
+       grid-template-rows: [eyes-start SilhouetteBackground-start] 20fr [eyes-end mouth-start] 20fr [mouth-end ] 20fr [SilhouetteBackground-end silhouette-start] 20fr [silhouette-end];
        border-radius: 10%;
          align-items:center;
          width:100%;
@@ -239,6 +218,7 @@ export class CharacterDesign extends PolymerElement {
 
 
  </style>
+
  <div class="CharacterCustomizeMain">
 
      <div class='SilhouetteBackgroundContainer'>
