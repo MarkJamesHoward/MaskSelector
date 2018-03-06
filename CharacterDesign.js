@@ -31,12 +31,12 @@ export class CharacterDesign extends PolymerElement {
 
   static get properties() {
     return {
-      silhouette: { Type: String, Value: "" },
+      silhouette: { Type: Number, value: 1 },
       level: { Type: Number, value: 1 },
       mouth: { Type: Number, value: 1 },
       eyes: { Type: Number, value: 1 },
-      NUMBER_OF_IMAGES_EYES: {Type: Number, value:3},
-      NUMBER_OF_IMAGES_MOUTH: {Type: Number, value:3},
+      NUMBER_OF_IMAGES_EYES: {Type: Number, value:6},
+      NUMBER_OF_IMAGES_MOUTH: {Type: Number, value:9},
     };
   }
 
@@ -112,14 +112,10 @@ export class CharacterDesign extends PolymerElement {
 
      .CharacterCustomizeMain {
        padding:0; margin: 0;
-       max-height: 100vh;
+       max-height: 100vmin;
        display: grid;
-       grid-template-areas: "eyes"
-                            "mouth"
-                            "
-
        grid-template-columns: [eyes-start SilhouetteBackground-start mouth-start silhouette-start] 1fr [ SilhouetteBackground-end silhouette-end eyes-end mouth-end];
-       grid-template-rows: [eyes-start SilhouetteBackground-start] 20fr [eyes-end mouth-start] 20fr [mouth-end ] 20fr [SilhouetteBackground-end silhouette-start] 20fr [silhouette-end];
+       grid-template-rows: [eyes-start SilhouetteBackground-start] 20fr [eyes-end mouth-start] 20fr [mouth-end ] 20fr [SilhouetteBackground-end silhouette-start] 40fr [silhouette-end];
        border-radius: 10%;
          align-items:center;
          width:100%;
@@ -149,6 +145,7 @@ export class CharacterDesign extends PolymerElement {
          align-self: center;
          grid-area: SilhouetteBackground;
          width: 100%;
+         height:100%;
      }
 
      .mouthselector {
@@ -222,7 +219,7 @@ export class CharacterDesign extends PolymerElement {
  <div class="CharacterCustomizeMain">
 
      <div class='SilhouetteBackgroundContainer'>
-             <img width=80% style='display: block; margin: 0 auto;' src='./images/silhouette/silhouette[[silhouette]].png'>
+             <img width=80% style='display: block; margin: 0 auto' src='./images/silhouette/silhouette[[silhouette]].png'>
      </div>
 
      <div class='eyesselector'>
