@@ -21,7 +21,7 @@ export class CharacterDesign extends PolymerElement {
     }
 
     for (var i = this.level; i > 1; i--) {
-      let q = `.lock${i}`;
+      let q = `lock${i}`;
       let sil = this.$[q];
       if (sil != undefined) {
         sil.classList.remove("Padlock");
