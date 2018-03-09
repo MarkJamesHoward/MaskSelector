@@ -15,14 +15,14 @@ export class CharacterDesign extends PolymerElement {
 
   ApplyLockImagesToSilhouettes() {
     for (var i = 1; i < this.NUMBER_OF_IMAGES_SILHOUETTES; i++) {
-      let q = `.lock${i}`;
-      let sil = this.$.q;
+      let q = `lock${i}`;
+      let sil = this.$[q];
       if (sil != undefined) sil.classList.add("Padlock");
     }
 
     for (var i = this.level; i > 1; i--) {
       let q = `.lock${i}`;
-      let sil = this.$.q;
+      let sil = this.$[q];
       if (sil != undefined) {
         sil.classList.remove("Padlock");
       }
@@ -37,6 +37,7 @@ export class CharacterDesign extends PolymerElement {
       eyes: { Type: Number, value: 1 },
       NUMBER_OF_IMAGES_EYES: {Type: Number, value:6},
       NUMBER_OF_IMAGES_MOUTH: {Type: Number, value:9},
+      NUMBER_OF_IMAGES_SILHOUETTES: {Type: Number, value:4}
     };
   }
 
@@ -260,21 +261,21 @@ export class CharacterDesign extends PolymerElement {
              
              <div data-silhouette="1" on-click="Pick" class="OverlayTwoItemsCharacter silhouettePicker">
                  <img style="grid-area:main;width:100%" class="sil1" src="./images/silhouette/silhouette1.png">
-                 <iron-icon class="lock1" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
+                 <iron-icon id="lock1" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
              </div>
 
              <div data-silhouette="2" on-click="Pick" class="OverlayTwoItemsCharacter silhouettePicker">
-             <iron-icon class="lock2" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
+             <iron-icon id="lock2" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
              <img style="grid-area:main;width:100%" class="sil2"  src="./images/silhouette/silhouette2.png">
              </div>
 
              <div data-silhouette="3" on-click="Pick"  class="OverlayTwoItemsCharacter silhouettePicker">
                  <img style="grid-area:main;width:100%" class="sil3"  src="./images/silhouette/silhouette3.png">
-                 <iron-icon class="lock3" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
+                 <iron-icon id="lock3" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
              </div>
              <div data-silhouette="4" on-click="Pick" class="OverlayTwoItemsCharacter silhouettePicker">
                  <img style="grid-area:main;width:100%" class="sil4"  on-click='PickSilhouetee(4)'  src="./images/silhouette/silhouette4.png">
-                 <iron-icon class="lock4" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
+                 <iron-icon id="lock4" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
              </div>
      </div> 
 
