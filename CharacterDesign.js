@@ -17,14 +17,14 @@ export class CharacterDesign extends PolymerElement {
     for (var i = 1; i < this.NUMBER_OF_IMAGES_SILHOUETTES; i++) {
       let q = `lock${i}`;
       let sil = this.$[q];
-      if (sil != undefined) sil.classList.add("Padlock");
+      if (sil != undefined) sil.classList.remove("NoPadlock");
     }
 
-    for (var i = this.level; i > 1; i--) {
+    for (var i = this.level; i >= 1; i--) {
       let q = `lock${i}`;
       let sil = this.$[q];
       if (sil != undefined) {
-        sil.classList.remove("Padlock");
+        sil.classList.add("NoPadlock");
       }
     }
   }
@@ -37,7 +37,8 @@ export class CharacterDesign extends PolymerElement {
       eyes: { Type: Number, value: 1 },
       NUMBER_OF_IMAGES_EYES: {Type: Number, value:6},
       NUMBER_OF_IMAGES_MOUTH: {Type: Number, value:9},
-      NUMBER_OF_IMAGES_SILHOUETTES: {Type: Number, value:4}
+      NUMBER_OF_IMAGES_SILHOUETTES: {Type: Number, value:4},
+      customize: { Type: Boolean, value: true }
     };
   }
 
@@ -98,7 +99,7 @@ export class CharacterDesign extends PolymerElement {
          grid-template-areas: "main";
      }
 
-     .Padlock {
+     .NoPadlock {
          display: none;
       }
      
