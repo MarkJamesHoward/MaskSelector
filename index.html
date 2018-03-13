@@ -17,8 +17,16 @@
 <body>
     
 
-    <character-design level="2" customize="false" style="height: 100vmin;width: 100vmin" >
+    <character-design id='char' level="2" customize="true" style="height: 100vmin;width: 100vmin" >
     </character-design>
+
+    <button onclick='updateLevel()'>Update</button>
+    <script>
+    
+    function updateLevel() {
+        document.querySelector('#char').setAttribute('level','3');
+    }
+    </script>
 
 </body>
 </html>

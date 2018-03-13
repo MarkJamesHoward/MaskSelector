@@ -29,10 +29,14 @@ export class CharacterDesign extends PolymerElement {
     }
   }
 
+  _levelChanged(newValue, oldValue) {
+    this.ConfigureButtons();
+  }
+  
   static get properties() {
     return {
       silhouette: { Type: Number, value: 1 },
-      level: { Type: Number, value: 1 },
+      level: { Type: Number, value: 1, observer: '_levelChanged' },
       mouth: { Type: Number, value: 1 },
       eyes: { Type: Number, value: 1 },
       NUMBER_OF_IMAGES_EYES: {Type: Number, value:6},
