@@ -13,31 +13,36 @@ export class CharacterDesign extends LitElement {
     this.allowMouthMoveRight = true;
     this.allowMoveEyesLeft = true;
     this.allowMoveEyesRight = true;
-    this.level = 5;
+    // this.level = 5;
     this.eyes = 1;
     this.mouth = 1;
     this.NUMBER_OF_IMAGES_EYES = 6;
     this.NUMBER_OF_IMAGES_MOUTH = 9;
     this.NUMBER_OF_IMAGES_SILHOUETTES = 4;
+    this.locks = [];
   }
 
   ApplyLockImagesToSilhouettes() {
+
     for (var i = 1; i < this.NUMBER_OF_IMAGES_SILHOUETTES; i++) {
-      let q = `lock${i}`;
-      let sil = this.$[q];
-      if (sil != undefined) sil.classList.remove("NoPadlock");
+      this.locks[i] = false;
     }
 
     for (var i = this.level; i >= 1; i--) {
-      let q = `lock${i}`;
-      let sil = this.$[q];
-      if (sil != undefined) {
-        sil.classList.add("NoPadlock");
-      }
+     this.locks[i] = true;
     }
+
+    // for (var i = this.level; i >= 1; i--) {
+    //   let q = `lock${i}`;
+    //   let sil = this.$[q];
+    //   if (sil != undefined) {
+    //     sil.classList.add("NoPadlock");
+    //   }
+    // }
   }
 
   _levelChanged(newValue, oldValue) {
+    console.log('level changed')
     this.ConfigureButtons();
   }
 
@@ -60,43 +65,35 @@ export class CharacterDesign extends LitElement {
       allowMoveEyesRight: Boolean,
       allowMoveEyesLeft: Boolean,
       allowMouthMoveRight: Boolean,
-      allowMouthMoveLeft: Boolean
+      allowMouthMoveLeft: Boolean,
+      locks: Array
     };
   }
 
   ConfigureButtons() {
-    //if (this.$.ArrowEyesRight == undefined) return;
 
     if (this.eyes >= this.NUMBER_OF_IMAGES_EYES || this.eyes >= this.level) {
       this.allowMoveEyesRight = false;
-      //this.$.ArrowEyesRight.classList.add("ArrowDisabled");
     } else {
       this.allowMoveEyesRight = true;
-      //this.$.ArrowEyesRight.classList.remove("ArrowDisabled");
     }
 
     if (this.eyes <= 1) {
       this.allowMoveEyesLeft = false;
-      // this.$.ArrowEyesLeft.classList.add("ArrowDisabled");
     } else {
       this.allowMoveEyesLeft = true;
-      //this.$.ArrowEyesLeft.classList.remove("ArrowDisabled");
     }
 
     if (this.mouth <= 1) {
       this.allowMouthMoveLeft = false;
-      //this.$.ArrowMouthLeft.classList.add("ArrowDisabled");
     } else {
       this.allowMouthMoveLeft = true;
-      //this.$.ArrowMouthLeft.classList.remove("ArrowDisabled");
     }
 
     if (this.mouth >= this.NUMBER_OF_IMAGES_MOUTH || this.mouth >= this.level) {
       this.allowMouthMoveRight = false;
-      //this.$.ArrowMouthRight.classList.add("ArrowDisabled");
     } else {
       this.allowMouthMoveRight = true;
-      //this.$.ArrowMouthRight.classList.remove("ArrowDisabled");
     }
 
     if (this.customize === "false") {
@@ -111,7 +108,7 @@ export class CharacterDesign extends LitElement {
       // this.$.SilhouetteSelector.classList.add("DisableCustomize");
     }
 
-    // this.ApplyLockImagesToSilhouettes();
+     this.ApplyLockImagesToSilhouettes();
   }
 
   connectedCallback() {
@@ -121,7 +118,8 @@ export class CharacterDesign extends LitElement {
 
   _render({ silhouette, level, mouth, eyes, NUMBER_OF_IMAGES_EYES
     , NUMBER_OF_IMAGES_MOUTH, NUMBER_OF_IMAGES_SILHOUETTES, customize,
-    allowMouthMoveLeft, allowMouthMoveRight, allowMoveEyesLeft, allowMoveEyesRight }) {
+    allowMouthMoveLeft, allowMouthMoveRight, allowMoveEyesLeft, allowMoveEyesRight,
+  locks }) {
     return html`
     <style>
       :root {
@@ -258,7 +256,7 @@ export class CharacterDesign extends LitElement {
     <div class="CharacterCustomizeMain">
     
       <div class='SilhouetteBackgroundContainer'>
-        <img width=80% style='display: block; margin: 0 auto' src='./images/silhouette/silhouette[[silhouette]].png'>
+        <img width=80% style='display: block; margin: 0 auto' src='./images/silhouette/silhouette${silhouette}.png'>
       </div>
     
       <div class='eyesselector'>
@@ -295,23 +293,23 @@ export class CharacterDesign extends LitElement {
     
       <div id='SilhouetteSelector' class='silhouette'>
     
-        <div data-silhouette="1" on-click="${() => this.Pick()}" class="OverlayTwoItemsCharacter silhouettePicker">
+        <div on-click="${() => this.Pick(1)}" class="OverlayTwoItemsCharacter silhouettePicker">
           <img style="grid-area:main;width:100%" class="sil1" src="./images/silhouette/silhouette1.png">
-          <iron-icon id="lock1" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
+          <iron-icon class$="${locks[1] ? 'NoPadlock' : '' }" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
         </div>
     
-        <div data-silhouette="2" on-click="Pick" class="OverlayTwoItemsCharacter silhouettePicker">
-          <iron-icon id="lock2" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
+        <div on-click="${() => this.Pick(2)}" class="OverlayTwoItemsCharacter silhouettePicker">
+          <iron-icon class$="${locks[2] ? 'NoPadlock' : '' }" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
           <img style="grid-area:main;width:100%" class="sil2" src="./images/silhouette/silhouette2.png">
         </div>
     
-        <div data-silhouette="3" on-click="Pick" class="OverlayTwoItemsCharacter silhouettePicker">
+        <div on-click="${() => this.Pick(3)}" class="OverlayTwoItemsCharacter silhouettePicker">
           <img style="grid-area:main;width:100%" class="sil3" src="./images/silhouette/silhouette3.png">
-          <iron-icon id="lock3" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
+          <iron-icon class$="${locks[3] ? 'NoPadlock' : '' }" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
         </div>
-        <div data-silhouette="4" on-click="Pick" class="OverlayTwoItemsCharacter silhouettePicker">
+        <div on-click="${() => this.Pick(4)}" class="OverlayTwoItemsCharacter silhouettePicker">
           <img style="grid-area:main;width:100%" class="sil4" on-click='PickSilhouetee(4)' src="./images/silhouette/silhouette4.png">
-          <iron-icon id="lock4" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
+          <iron-icon class$="${locks[4] ? 'NoPadlock' : '' }" style="grid-area:main;z-index:2;align-self:center;justify-self:center" icon="lock"></iron-icon>
         </div>
       </div>
     
@@ -321,10 +319,16 @@ export class CharacterDesign extends LitElement {
 
 
   Pick(e) {
-    let item = e.currentTarget.dataset.silhouette
-    if (item <= this.level) {
-      this.silhouette = item
+    console.log(e)
+    // let item = e.currentTarget.dataset.silhouette
+    // if (item <= this.level) {
+    //   this.silhouette = item
+    // }
+
+    if (e <= this.level) {
+      this.silhouette = e
     }
+
   }
 
   moveEyesLeft() {
@@ -332,7 +336,6 @@ export class CharacterDesign extends LitElement {
     if (this.eyes > 1) {
       this.eyes--;
       this.allowMoveEyesRight = true;
-      // this.$.ArrowEyesRight.classList.remove("ArrowDisabled");
       this.ConfigureButtons();
     }
   }
@@ -342,7 +345,6 @@ export class CharacterDesign extends LitElement {
     if (this.eyes < this.NUMBER_OF_IMAGES_EYES && this.eyes < this.level) {
       this.eyes++;
       this.allowMoveEyesLeft = true;
-      //this.$.ArrowEyesLeft.classList.remove("ArrowDisabled");
       this.ConfigureButtons();
     }
   }
@@ -352,7 +354,6 @@ export class CharacterDesign extends LitElement {
     if (this.mouth > 1) {
       this.mouth--;
       this.allowMouthMoveRight = true;
-      //this.$.ArrowMouthRight.classList.remove("ArrowDisabled");
       this.ConfigureButtons();
     }
   }
@@ -361,7 +362,6 @@ export class CharacterDesign extends LitElement {
     if (this.mouth < this.NUMBER_OF_IMAGES_MOUTH && this.mouth < this.level) {
       this.mouth++;
       this.allowMouthMoveLeft = true;
-      //this.$.ArrowMouthLeft.classList.remove("ArrowDisabled");
       this.ConfigureButtons();
     }
   }
