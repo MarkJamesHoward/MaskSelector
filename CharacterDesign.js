@@ -33,7 +33,7 @@ export class CharacterDesign extends LitElement {
       NUMBER_OF_IMAGES_EYES: Number,
       NUMBER_OF_IMAGES_MOUTH: Number,
       NUMBER_OF_IMAGES_SILHOUETTES: Number,
-      enableCustomize: Boolean,
+      customize: Boolean,
       allowMoveEyesRight: Boolean,
       allowMoveEyesLeft: Boolean,
       showMouthMoveLeft: Boolean,
@@ -80,23 +80,8 @@ export class CharacterDesign extends LitElement {
     }
   }
 
-  ConfigureButtons() {
-
-    if (this.customize === "false") {
-      this.showMouthMoveLeft = false;
-      this.showMouthMoveRight = false;
-      this.showMouthMoveLeft = false;
-      this.showMouthMoveRight = false;
-      // this.$.ArrowEyesLeft.classList.add("DisableCustomize");
-      // this.$.ArrowEyesRight.classList.add("DisableCustomize");
-      // this.$.ArrowMouthLeft.classList.add("DisableCustomize");
-      // this.$.ArrowMouthRight.classList.add("DisableCustomize");
-      // this.$.SilhouetteSelector.classList.add("DisableCustomize");
-    }
-  }
-
   _render({ silhouette, level, mouth, eyes, NUMBER_OF_IMAGES_EYES
-    , NUMBER_OF_IMAGES_MOUTH, NUMBER_OF_IMAGES_SILHOUETTES, enableCustomize,
+    , NUMBER_OF_IMAGES_MOUTH, NUMBER_OF_IMAGES_SILHOUETTES, customize,
     allowMouthMoveLeft, allowMouthMoveRight, allowMoveEyesLeft, allowMoveEyesRight,
     locks }) {
     return html`
@@ -241,7 +226,7 @@ export class CharacterDesign extends LitElement {
       <div class='eyesselector'>
         <div class='eyes'>
     
-          <div class$="${this.enableCustomize ? '' : 'DisableCustomize'}">
+          <div class$="${this.customize ? '' : 'DisableCustomize'}">
             <div class$="${this.AllowEyesMoveLeft() ? 'LeftArrow' : 'LeftArrow ArrowDisabled'}" on-click='${() => this.moveEyesLeft()}'>
             </div>
           </div>
@@ -250,7 +235,7 @@ export class CharacterDesign extends LitElement {
             <img width="100%" src="./images/eyes/eyes${eyes}.png">
           </div>
     
-          <div class$="${this.enableCustomize ? '' : 'DisableCustomize'}">
+          <div class$="${this.customize ? '' : 'DisableCustomize'}">
             <div class$="${this.AllowEyesMoveRight() ? 'RightArrow' : 'RightArrow ArrowDisabled'}" on-click='${() => this.moveEyesRight()}'>
             </div>
           </div>
@@ -264,7 +249,7 @@ export class CharacterDesign extends LitElement {
     <div class="mouthselector">
       <div class='mouth'>
     
-        <div class$="${this.enableCustomize ? '' : 'DisableCustomize'}">
+        <div class$="${this.customize ? '' : 'DisableCustomize'}">
           <div class$="${this.AllowMouthMoveLeft() ? 'LeftArrow' : 'LeftArrow ArrowDisabled'}" on-click="${() => this.moveMouthLeft()}"></div>
         </div>
     
@@ -272,7 +257,7 @@ export class CharacterDesign extends LitElement {
           <img id="mouth" style="width:100%;" src="./images/mouths/mouth${mouth}.png">
         </div>
     
-        <div class$="${this.enableCustomize ? '' : 'DisableCustomize'}">
+        <div class$="${this.customize ? '' : 'DisableCustomize'}">
           <div class$="${this.AllowMouthMoveRight() ? 'RightArrow' : 'RightArrow ArrowDisabled'}" on-click="${() => this.moveMouthRight()}">
           </div>
         </div>
@@ -280,7 +265,7 @@ export class CharacterDesign extends LitElement {
       </div>
     </div>
     
-    <div id='SilhouetteSelector' class$="${this.enableCustomize ? 'silhouette' : 'DisableCustomize'}">
+    <div id='SilhouetteSelector' class$="${this.customize ? 'silhouette' : 'DisableCustomize'}">
     
       <div on-click="${() => this.Pick(1)}" class="OverlayTwoItemsCharacter silhouettePicker">
         <img style="grid-area:main;width:100%" class="sil1" src="./images/silhouette/silhouette1.png">

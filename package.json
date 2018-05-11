@@ -13,7 +13,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "polyserve --module-resolution=node"
+    "test": "polyserve --npm --module-resolution=node"
   },
   "keywords": [],
   "author": "",
